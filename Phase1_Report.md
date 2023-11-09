@@ -1,11 +1,12 @@
 # Crop Recommendation System
 
-- [Github Link]("")
+- [Github Link]("https://github.com/karankumbhar47/Crop-Recommendation-system")
 
 ## Data collection and Preprocessing 
 
 ### Crop recommendation data
-- teh
+- This Dataset taken from [kaggle](https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset), so it was already in state to use in our models. 
+- For some analysis one hot encoding is used to convert strings values to boolean values.
 
 ### Crop price prediction data
 
