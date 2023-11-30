@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Yield Prediction</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Crop Yield Prediction</h1>
+        <form id="predictionForm">
+            <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="number" id="year" name="year" required>
+            </div>
+
+            <div class="form-group">
+                <label for="rainfall">Average Rainfall (mm per year):</label>
+                <input type="number" id="rainfall" name="rainfall" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pesticides">Pesticides Usage (tonnes):</label>
+                <input type="number" id="pesticides" name="pesticides" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="temperature">Average Temperature:</label>
+                <input type="number" id="temperature" name="temperature" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="area">Area:</label>
+                <input type="text" id="area" name="area" required>
+            </div>
+
+            <div class="form-group">
+                <label for="crop">Crop Item:</label>
+                <input type="text" id="crop" name="crop" required>
+            </div>
+
+            <button type="button" onclick="predictYield()">Predict Yield</button>
+        </form>
+
+        <div id="resultContainer">
+            <h2>Predicted Yield:</h2>
+            <p id="predictedYield"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
