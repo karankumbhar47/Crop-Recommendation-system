@@ -52,6 +52,7 @@ class CropYieldDataPipeline():
         output_df["Item"] = output_df["Item"].replace("Sorghum","Jowar") 
         output_df["Item"] = output_df["Item"].replace("Rice, paddy","Rice") 
         output_df["Item"] = output_df["Item"].replace("Plantains and others","Mango") 
+        output_df["Item"] = output_df["Item"].replace("Soybeans","Soyabeans") 
 
         if save_to is not None:
             output_df.to_csv(save_to, sep=",", index=False)

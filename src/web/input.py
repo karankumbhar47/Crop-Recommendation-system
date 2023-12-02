@@ -6,7 +6,6 @@ import base64
 import datetime as date
 
 # Load the trained model
-
 model = pickle.load(open('/home/karan/Templates/Crop-Recommendation-system/src/Notebooks/Crop_Yield_Prediction.pkl','rb'))
 
 preprocesser = pickle.load(open('/home/karan/Templates/Crop-Recommendation-system/src/Notebooks/preprocessor.pkl','rb'))
