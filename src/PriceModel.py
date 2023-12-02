@@ -11,7 +11,7 @@ import pandas as pd
 np.random.seed(42)
 
 
-class CostModel():
+class PriceModel():
     def __init__(self,
                  trained: bool = True,
                  show_logs: bool = False,
@@ -20,8 +20,10 @@ class CostModel():
                  cross_val: bool = True,
                  save_as: str = None,
                  file: str = None):
-        self.sequence_length = sequence_length
         self.batch_size = batch_size
+        self.cross_val = cross_val
+        self.show_logs = show_logs
+        self.sequence_length = sequence_length
         if trained == False:
             # load the processed data
             self.data = pd.read_csv(file)
@@ -30,56 +32,58 @@ class CostModel():
         else:
             self.model = keras.models.load(file)
 
-    def train(self, save_as: str = None) -> None:
+    def train(self,
+              save_as: str = None,
+              epochs: int = 10) -> None:
         train_df = []
         test_df = []
-        if (cross_val):
-            split_date = np.percentile(df["arrival_date"], 90)
-            if (logging):
-                print(f"Start date{datetime.fromordinal(np.min(df['arrival_date']))}")
-                print(f"Split Date{datetime.fromordinal(int(split_date))}")
-                print(f"End Date{datetime.fromordinal(np.max(df['arrival_date']))}")
+        if (self.cross_val):
+            split_date = np.percentile(self.data["arrival_date"], 90)
+            if (self.show_logs):
+                print(f"\tStart date {datetime.fromordinal(np.min(self.data['arrival_date']))}")
+                print(f"\tSplit date {datetime.fromordinal(int(split_date))}")
+                print(f"\tEnd date {datetime.fromordinal(np.max(self.data['arrival_date']))}")
 
-            mask = df["arrival_date"] < split_date
-            train_df = df[mask].copy()
-            test_df = df[~mask].copy()
+            mask = self.data["arrival_date"] < split_date
+            train_df = self.data[mask].copy()
+            test_df = self.data[~mask].copy()
         else:
-            train_df = df
+            train_df = self.data
 
         self.scaler = MaxAbsScaler()
         train_df[['min_price', 'max_price', 'modal_price']] = self.scaler.fit_transform(train_df[['min_price', 'max_price', 'modal_price']])
-        if(cross_val):
+        if(self.cross_val):
             test_df[['min_price', 'max_price', 'modal_price']] = self.scaler.transform(test_df[['min_price', 'max_price', 'modal_price']])
 
         X_train, y_train = [], []
-        for i in range(len(train_df) - sequence_length):
-            X_train.append(train_df.iloc[i:i+sequence_length][['arrival_date', 'latitude', 'longitude']].values)
-            y_train.append(train_df.iloc[i+sequence_length][['min_price', 'max_price', 'modal_price']].values)
+        for i in range(len(train_df) - self.sequence_length):
+            X_train.append(train_df.iloc[i:i+self.sequence_length][['arrival_date', 'latitude', 'longitude']].values)
+            y_train.append(train_df.iloc[i+self.sequence_length][['min_price', 'max_price', 'modal_price']].values)
         X_train = np.asarray(X_train)
         y_train = np.asarray(y_train).astype('float32')
 
         X_test, y_test = [], []
-        if(cross_val):
-            for i in range(len(test_df) - sequence_length):
-                X_test.append(test_df.iloc[i:i+sequence_length][['arrival_date', 'latitude', 'longitude']].values)
-                y_test.append(test_df.iloc[i+sequence_length][['min_price', 'max_price', 'modal_price']].values)
+        if(self.cross_val):
+            for i in range(len(test_df) - self.sequence_length):
+                X_test.append(test_df.iloc[i:i+self.sequence_length][['arrival_date', 'latitude', 'longitude']].values)
+                y_test.append(test_df.iloc[i+self.sequence_length][['min_price', 'max_price', 'modal_price']].values)
             X_test = np.asarray(X_test)
             y_test = np.asarray(y_test).astype('float32')
 
         self.model = Sequential()
-        self.model.add(LSTM(3, input_shape=(sequence_length, 3), batch_size=batch_size))
+        self.model.add(LSTM(3, input_shape=(self.sequence_length, 3), batch_size=self.batch_size))
         self.model.add(Dense(32, activation='tanh'))
         self.model.add(Dense(3, activation='linear'))
 
         self.model.compile(optimizer=Adam(), loss='mean_squared_error')
 
         self.model.fit(X_train, y_train,
-                       epochs=10,
+                       epochs=epochs,
                        batch_size=self.batch_size,
                        validation_split=0.1)
-        if cross_val:
-            evaluation = model.evaluate(X_test, y_test)
-            if logging:
+        if self.cross_val:
+            evaluation = self.model.evaluate(X_test, y_test)
+            if self.show_logs:
                 print(f"Mean Absolute Error on Test Set: {evaluation}")
         if save_as is not None:
             self.model.save(save_as)

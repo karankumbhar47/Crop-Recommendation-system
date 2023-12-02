@@ -3,7 +3,7 @@ import numpy as np
 from datetime import datetime
 import argparse
 
-class CostDataPipeline():
+class PriceDataPipeline():
     def __init__(self,
                  locations_file: str = None,
                  locations: pd.DataFrame = None):
