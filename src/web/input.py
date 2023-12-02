@@ -16,6 +16,7 @@ items_list =['Maize','Potatoes','Rice','Jowar','Soybeans','Wheat','Cassava','Swe
 
 def prediction(Year, average_rain_fall_mm_per_year, pesticides_tonnes, avg_temp, Area, Item):
     features = np.array([[Year, average_rain_fall_mm_per_year, pesticides_tonnes, avg_temp, Area, Item]], dtype=object)
+    # print(Item)
     transformed_features = preprocesser.transform(features)
     predicted_yield = model.predict(transformed_features).reshape(1, -1)
     return predicted_yield[0]
@@ -37,12 +38,12 @@ def main():
     selected_day = clamped_date.day
     selected_year = clamped_date.year
 
-    print(selected_month, selected_day, selected_year)
+    # print(selected_month, selected_day, selected_year)
 
     average_rain_fall_mm_per_year = st.number_input("Average Rainfall (mm per year)", value=1485.0)
     pesticides_tonnes = st.number_input("Pesticides (tonnes)", value=121.0)
     avg_temp = st.number_input("Average Temperature", value=16.37)
-    Area = st.text_input("Area", "India")
+    # Area = st.text_input("Area", "India")
     # Item = st.text_input("Item", "Maize")
     # Item = st.selectbox("Select Crop", items_list)
 
@@ -79,7 +80,10 @@ def main():
         crop = items_list[0]
         for item in items_list:
             result = prediction(selected_year, average_rain_fall_mm_per_year, pesticides_tonnes, avg_temp, Area, item)
+            space = " "*(10 - len(item))
+            item += space
             st.success(f"{item} :- {result[0]/10} Kg/hectare")
+            print(item+"==")
             if(max_yield<(result[0]/10)):
                 max_yield = result[0]/10
                 crop = item
