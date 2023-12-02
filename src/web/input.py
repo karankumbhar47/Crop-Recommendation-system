@@ -82,12 +82,12 @@ def main():
             result = prediction(selected_year, average_rain_fall_mm_per_year, pesticides_tonnes, avg_temp, Area, item)
             space = " "*(10 - len(item))
             item += space
-            st.success(f"{item} :- {result[0]/10} Kg/hectare")
+            st.success(f"{item} :- {(result[0]/10):.2f} Kg/hectare")
             print(item+"==")
             if(max_yield<(result[0]/10)):
                 max_yield = result[0]/10
                 crop = item
-        st.success(f"We recommend {crop} which have maximum yield {max_yield} Kg/hectare")
+        st.success(f"We recommend {crop} which have maximum yield {max_yield:.2f} Kg/hectare")
 
 if __name__ == "__main__":
     main()
