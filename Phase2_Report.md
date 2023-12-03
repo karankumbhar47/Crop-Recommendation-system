@@ -110,20 +110,36 @@ The trained model and preprocessor have been saved as 'Crop_Yield_Prediction.pkl
 ## 2. Model Comparison:
 
 ### a. Complexity, Ease of Interpretation:
-   - The RNN model has a moderate level of complexity due to the presence of LSTM layers. While RNNs are generally more complex, the sequential nature of time series data makes them suitable. However, RNNs can be challenging to interpret compared to simpler models.
+   - The RNN model has a moderate level of complexity due to the presence of
+     LSTM layers. While RNNs are generally more complex, the sequential nature
+     of time series data makes them suitable. However, RNNs can be challenging
+     to interpret compared to simpler models.
 
 ### b. Accuracy or Relevant Performance Metrics:
-   - The model's performance was evaluated using mean squared error as the loss function. The choice of error metric is suitable for regression tasks like price prediction. The model achieved satisfactory accuracy on the validation set, as indicated by the mean absolute error.
+   - The model's performance was evaluated using mean squared error as the loss
+     function. The choice of error metric is suitable for regression tasks like
+     price prediction. The model achieved satisfactory accuracy on the
+     validation set, as indicated by the mean absolute error.
 
 ### c. Variance:
-   - Variance in this context refers to the variability of predictions across different instances. The model may exhibit variance due to factors such as market fluctuations and external influences. Regularization techniques and additional features could be explored to address variance.
+   - Variance in this context refers to the variability of predictions across
+     different instances. The model may exhibit variance due to factors such as
+     market fluctuations and external influences. Regularization techniques and
+     additional features could be explored to address variance.
 
 ### d. Training Time:
-   - Training time for the RNN model is influenced by factors like the size of the dataset, the complexity of the model, and the number of training epochs. `The model was trained for a reasonable number of epochs to capture temporal patterns.`
+   - Training time for the RNN model is influenced by factors like the size of
+     the dataset, the complexity of the model, and the number of training
+     epochs. `The model was trained for a reasonable number of epochs to
+     capture temporal patterns.`
 
 
 ## 3. Comparison with Research Papers:
-   - While research papers might provide benchmarks, the effectiveness of models depends on the specific dataset and preprocessing steps. The implemented RNN model aligns with the general approach in research papers for time series forecasting. However, performance improvements can be sought by considering the following areas:
+   - While research papers might provide benchmarks, the effectiveness of
+     models depends on the specific dataset and preprocessing steps. The
+     implemented RNN model aligns with the general approach in research papers
+     for time series forecasting. However, performance improvements can be
+     sought by considering the following areas:
      - **Feature Engineering:** Explore additional relevant features that might impact crop prices, such as weather data, economic indicators, or seasonal trends.
      - **Hyperparameter Tuning:** Experiment with different hyperparameter configurations for the RNN, including the number of LSTM units, learning rate, and batch size.
      - **Ensemble Methods:** Combine predictions from multiple models or different architectures to enhance overall predictive power.

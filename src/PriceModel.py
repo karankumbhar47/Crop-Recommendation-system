@@ -1,10 +1,11 @@
 from keras.layers import Dense, LSTM, Input
-from keras.models import Sequential, Model
+from keras.models import Sequential, Model, load_model
 from keras.optimizers import Adam
 from sklearn.preprocessing import MaxAbsScaler
 from sklearn.model_selection import train_test_split
 from keras.regularizers import l2
 from datetime import datetime
+import pickle
 import numpy as np
 import pandas as pd
 
@@ -30,7 +31,8 @@ class PriceModel():
             self.model = None
             self.train()
         else:
-            self.model = keras.models.load(file)
+            self.model = load_model(file)
+            self.scaler = pickle.load(open(f"{file}_scaler.pkl", "rb"))
 
     def train(self,
               save_as: str = None,
@@ -87,11 +89,13 @@ class PriceModel():
                 print(f"Mean Absolute Error on Test Set: {evaluation}")
         if save_as is not None:
             self.model.save(save_as)
+            pickle.dump(self.scaler, open(f"{save_as}_scaler.pkl", "wb"))
 
-    def predict(date: datetime, long: float, lat: float) -> np.array:
-        predictDate = datetime.toordinal(datetime)
+    def predict(self, date: datetime, long: float, lat: float) -> np.array:
+        predictDate = date.toordinal()
+        print(predictDate)
         prediction = self.model.predict([[
-            [predictDate - i, lat, long] for i in range(-4,1,-1)
+            [predictDate - i, lat, long] for i in range(4,-1,-1)
         ]])
         prices = self.scaler.inverse_transform(prediction)
         return prices
