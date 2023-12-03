@@ -79,7 +79,7 @@ def main():
         st.warning("Please select a state and district.")
 
     # Make prediction
-    if st.button("Predict Yield"):
+    if st.button("Recommend"):
         Area = "India"
         max_yield = 0
         crop = items_list[0]

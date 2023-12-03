@@ -54,10 +54,10 @@ def train_final_model(X_train_dummy, X_test_dummy, y_train):
     y_prediction = final_model.predict(X_test_dummy)
     print(f"Final Model: Mae : {mean_absolute_error(y_test, y_prediction)} Score : {r2_score(y_test, y_prediction)}")
 
-    with open('Crop_Yield_Prediction.pkl', 'wb') as model_file:
+    with open('./models/Crop_Yield_Prediction.pkl', 'wb') as model_file:
         pkl.dump(final_model, model_file)
 
-    pkl.dump(preprocesser, open('preprocessor.pkl', 'wb'))
+    pkl.dump(preprocesser, open('./models/preprocessor.pkl', 'wb'))
 
 if __name__ == "__main__":
     # Read the original data
