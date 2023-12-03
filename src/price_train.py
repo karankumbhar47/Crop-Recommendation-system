@@ -23,4 +23,4 @@ for crop in crops:
 for crop in crops:
     print(f"Training model for {crop}...")
     model = PriceModel(trained = False, file=f"{processed_prefix}{crop}.csv", show_logs=True)
-    model.train(save_as=f"{model_prefix}{crop}.h5", epochs=10)
+    model.train(save_as=f"{model_prefix}{crop}.h5", epochs=20)

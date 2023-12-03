@@ -73,7 +73,7 @@ class PriceModel():
             y_test = np.asarray(y_test).astype('float32')
 
         self.model = Sequential()
-        self.model.add(LSTM(3, input_shape=(self.sequence_length, 3), batch_size=self.batch_size))
+        self.model.add(LSTM(3, input_shape=(self.sequence_length, 3), batch_size=self.batch_size, kernel_regularizer='l2'))
         self.model.add(Dense(32, activation='tanh'))
         self.model.add(Dense(3, activation='linear'))
 
