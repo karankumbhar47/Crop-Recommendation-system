@@ -38,9 +38,9 @@ maximum and modal price for the given crop.
 ### 2.3 Crop Recommendation
 
 The Crop Recommendation System combines the predictions from both models to
-recommend crops to the farmer. The recommendation is obtained by maximizing the
+recommend crops to the farmer. The recommendation is obtained by maximizing
 the expected income per month. This value of income is obtained by multiplying
-the expected yeild and expected price. In other words, the system suggests
+the expected yield and expected price. In other words, the system suggests
 crops that are anticipated to have both high yields and favorable market
 prices. This approach aims to optimize farmers' income by considering both
 production and market conditions.
@@ -57,7 +57,7 @@ The overall process of the Crop Recommendation System involves the following ste
    - Forecast market prices for the predicted yield using the Price Predictor model based on the location.
 
 3. **Crop Recommendation:**
-   - Calculate the expected income by multiplying yeild and price predicted for each crop.
+   - Calculate the expected income by multiplying yield and price predicted for each crop.
    - Recommend crops with the highest estimated income, indicating potential profitability.
 
 4. **Output:**
@@ -66,9 +66,9 @@ The overall process of the Crop Recommendation System involves the following ste
 
 `Our Two Models are as follows :-` 
 
-# Crop Yield Prediction
+## Crop Yield Prediction
 
-## 1. Introduction
+### 1. Introduction
 
 The Crop Yield Prediction model aims to forecast the yield of crops based on
 diverse features, including year, average rainfall, pesticide usage, average
@@ -76,20 +76,20 @@ temperature, area, and crop type. This report provides an overview of the
 machine learning models trained for the task, a comparison of their
 performance, and insights obtained from the evaluation.
 
-## 2. Machine Learning Models
+### 2. Machine Learning Models
 
-### 2.1 Models Trained
+#### 2.1 Models Trained
 
 The following machine learning models were trained for the Crop Yield Prediction task:
 
 - Linear Regression
 - Lasso Regression
 - Ridge Regression
-- Decision Tree Regressor (with variations in hyperparameters)
+- Decision Tree Regressor (with variations in hyper-parameters)
 
-## 3. Model Comparison
+### 3. Model Comparison
 
-### 3.1 Comparison Criteria
+#### 3.1 Comparison Criteria
 
 The models are compared based on the following criteria:
 
@@ -113,69 +113,86 @@ d. **Training Time:**
    - Evaluate the training time for each model. But here, this four models
      training time is very less compared to other machine learning technique.
 
-### 3.2 Results
+#### 3.2 Results
 
-  #### Linear Regression
+##### Linear Regression
   - MAE: [~ 29907]
   - R2 Score: [0.74]
 
-  #### Lasso Regression
+##### Lasso Regression
   - MAE: [~ 29893]
   - R2 Score: [0.74]
 
-  #### Ridge Regression
+##### Ridge Regression
   - MAE: [~ 29863]
   - R2 Score: [0.74]
 
-  #### Decision Tree Regressor
+##### Decision Tree Regressor
   - MAE: [~ 3935]
   - R2 Score: [0.97]
 
-## 5. Conclusion
+### 5. Conclusion
 
 In conclusion, the Crop Yield Prediction model was trained and evaluated using
 various machine learning algorithms. The Decision Tree Regressor with specific
-hyperparameters demonstrated better results. Considerations regarding model
+hyper-parameters demonstrated better results. Considerations regarding model
 complexity, accuracy, and training time were discussed. Further improvements
 could involve exploring ensemble methods, feature engineering, reliable dataset
-availability and additional hyperparameter tuning.
+availability and additional hyper-parameter tuning.
 
 The trained model and preprocessor have been saved as
-'Crop_Yield_Prediction.pkl' and 'preprocessor.pkl,' respectively.
+`Crop_Yield_Prediction.pkl` and `preprocessor.pkl,` respectively.
 
-# Price Predictor
+## Price Predictor
 
-## 1. Models Trained:
-   - Recurrent Neural Network (RNN)
+- For price prediction, we use an RNN model that takes location and date as
+  input and gives a prediction for what would be the price of crop at that
+  location on the day.
 
-## 2. Model Comparison:
+### 1. Data preprocessing and Model Design
 
-### a. Complexity, Ease of Interpretation:
+- The data for the required crops is downloaded from the `data.gov.in`.
+- The State and district are replaced with the latitude and longitudes using the
+    data from `locations.csv`. This is useful as the prices in the nearby
+    districts are a lot more likely to be correlated. By using latitudes and
+    longitudes to represent the location, the model can interpret it as such
+    more easily.
+- The arrival date is converted to ordinal representation from the string.
+- Unnecessary parameters are dropped.
+- We can then save this data in order to avoid unnecessary re-computation.
+- Our model first reads this data, and scales the price ranges using
+    `MaxAbsScaler`.
+- This data is then converted into series for feeding into our RNN model.
+- This model has 3 layers, 1 LSTM and 2 Dense layers.
+- We then train this model with our chosen hyper-parameters and save it along
+    with our scaler.
+- When we make a prediction, it also reverses the transformation made by scaler
+    and returns us useful values.
+
+
+### 2. Model Comparison:
+
+#### a. Complexity, Ease of Interpretation:
 
    - The RNN model has a moderate level of complexity due to the presence of
      LSTM layers. While RNNs are generally more complex, the sequential nature
      of price data makes them suitable.
 
-### b. Accuracy or Relevant Performance Metrics:
+#### b. Accuracy or Relevant Performance Metrics:
 
    - The model's is trained on first 80% of the values and its performance is
      cross validated on the remaining 20% data using mean squared error as the
      loss function. The model achieved satisfactory accuracy on the validation
      set.
 
-### c. Regularization and Hyperparameters:
+#### c. Regularization and Hyper-parameters:
 
-   - L2 regularization was used on the kernel value to avoid overfitting.
-   - The following hyperparameters showed based results, batch_size 16,
+   - L2 regularization was used on the kernel value to avoid over-fitting.
+   - The following hyper-parameters showed based results, batch_size 16,
      sequence_length 5. These can be changed easily when initializing the
-     PriceModel calss.
+     PriceModel class.
    - I used 20 epochs as there is no appearent reduction in loss after this
      point.
-
-### d. Training Time:
-
-   - The training time is quite small, about 5 to 7 seconds per epoch for every
-     model.
 
 ## Conclusion:
 
