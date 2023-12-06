@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from PricePipeline import PriceDataPipeline
 from PriceModel import PriceModel
@@ -7,6 +8,21 @@ processed_prefix = "dataset/processed/crop-price/"
 model_prefix = "models/"
 crops = ['Maize', 'Rice', 'Wheat', 'Potatoes', 'Jowar', 'Soyabeans', 'Sweet_potatoes', 'Mango', 'Yams']
 location_df = "dataset/location.csv"
+
+try:
+    os.makedirs(processed_prefix)
+except OSError as e:
+    print(e)
+
+try:
+    os.makedirs(model_prefix)
+except OSError as e:
+    print(e)
+
+try:
+    os.makedirs(raw_prefix)
+except OSError as e:
+    print(e)
 
 for crop in crops:
     try:

@@ -47,6 +47,8 @@ def preprocess_data(train_data, test_data):
 
     return X_train_dummy, X_test_dummy, train_data['hg/ha_yield'], test_data['hg/ha_yield']
 
+
+
 # Train the final model
 def train_final_model(X_train_dummy, X_test_dummy, y_train):
     final_model = DecisionTreeRegressor(min_samples_split=5, max_depth=10)
@@ -60,6 +62,11 @@ def train_final_model(X_train_dummy, X_test_dummy, y_train):
     pkl.dump(preprocesser, open('./models/preprocessor.pkl', 'wb'))
 
 if __name__ == "__main__":
+    try:
+        os.makedirs("models")
+    except OSError as e:
+        print(e)
+
     # Read the original data
     yield_data = read_original_data()
 
